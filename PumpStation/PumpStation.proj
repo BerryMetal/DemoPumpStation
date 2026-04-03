@@ -5,7 +5,16 @@
   <target-platform>win64</target-platform>
   <configurations>
     <configuration>
-      <resources />
+      <resources>
+        <resource name="PLC_1" core-id="CORE">
+          <tasks>
+            <task name="Pump" priority="0" interval="t#100ms" single="" />
+          </tasks>
+          <programs>
+            <program name="p1" task-name="pump" program-instance="pump()" />
+          </programs>
+        </resource>
+      </resources>
     </configuration>
   </configurations>
   <dependencies>
