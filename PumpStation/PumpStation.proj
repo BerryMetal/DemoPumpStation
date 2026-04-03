@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <version>1.0.0</version>
+  <target-type>plc-application</target-type>
+  <target-platform>win64</target-platform>
+  <configurations>
+    <configuration>
+      <resources />
+    </configuration>
+  </configurations>
+  <dependencies>
+    <dependence include="System" version="&gt;=1.0.0" />
+  </dependencies>
+  <project-references />
+  <company />
+  <root-namespace />
+  <author />
+  <short-description />
+  <description />
+</project>

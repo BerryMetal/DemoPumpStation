@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<solution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <items>
+    <project>
+      <id value="eaaf5c0c-14e8-4ae5-abb7-bc194f591a2a" />
+      <path>PumpStation\PumpStation.proj</path>
+    </project>
+  </items>
+</solution>
