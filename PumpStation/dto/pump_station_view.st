@@ -2,10 +2,10 @@
 
 	struct
 	    isStarted : bool;
-	    requestedUnits : uint;
-	    activeUnits : uint;
+	    requestedPower : real;
+	    activePower : real;
 	
-	    vfdUnitId : int;
+	    vfdUnitId : udint;
 	    vfdFrequency : lreal;
 	    vfdStatus : VfdState;
 	

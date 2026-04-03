@@ -2,6 +2,6 @@
 	struct
 	    startCmd : bool;
 	    stopCmd : bool;
-	    setpointUnits : uint;
+	    setpointPower : real;
 	end_struct;
 end_type

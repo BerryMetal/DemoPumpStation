@@ -1,7 +1,7 @@
 ﻿
 type PumpUnitView :
 	struct
-	    id : uint;
+	    id : udint;
 	    role : PumpRole;
 	    available : bool;
 	    faulted : bool;
