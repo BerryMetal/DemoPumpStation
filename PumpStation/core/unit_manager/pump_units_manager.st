@@ -1,5 +1,5 @@
 ﻿
-class UnitManager implements IUnitManager
+class UnitManager implements IPumpUnits
 	var private
 		units : ref_to array[*] of PumpUnit;
 		start, end : udint;
@@ -44,6 +44,18 @@ class UnitManager implements IUnitManager
 	end_method
 
 
+	method findUnit : unitHandle
+	var_input id : udint; end_var
+	var i : udint; end_var
+	    for i := start to end do
+	        if units^[i].id = id then
+	            findUnit := ref(units^[i]);
+	            return;
+	        end_if
+	    end_for	
+	end_method
+	
+	
 	method public findNextAvailable : unitHandle
 	var i : udint; end_var
 		if not this.isValid() then return; end_if

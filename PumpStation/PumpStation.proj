@@ -19,6 +19,7 @@
   </configurations>
   <dependencies>
     <dependence include="System" version="&gt;=1.0.0" />
+    <dependence include="Modbus" version="^1.0.0" />
   </dependencies>
   <project-references />
   <company />

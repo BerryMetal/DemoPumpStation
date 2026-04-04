@@ -2,43 +2,67 @@
 
 var
     drives : IPumpVfdDriveAdapter;
-    units : IUnitManager;
+    units : IPumpUnits;
+    controller : IControllerState;
 end_var
 
 method public init
 var_input 
 	d : IPumpVfdDriveAdapter;
-	m : IUnitManager;
+	m : IPumpUnits;
+	c : IControllerState;
 end_var
     drives := d;
     units := m;
+    controller := c;
 end_method
 
-method public buildView : PumpStationViewModel
-var_input controller : ref_to PumpStationController; end_var
 
+method public buildControllerView : PumpControllerViewModel
 var
-    vm : PumpStationViewModel;
+    vm : PumpControllerViewModel;
     i : udint;
 end_var
-
-    vm.isStarted := controller^.isStarted();
-    vm.requestedPower := controller^.getRequestedPower();
+	
+	if units = NULL or controller = NULL then return; end_if
+	
+    vm.isStarted := controller.isStarted();
+    vm.requestedPower := controller.getRequestedPower();
+    vm.vfdUnitId := controller.getVfdUnitId();
+        
     vm.activePower := units.getCurrentPower(drives.getVfdFrequency());
-
-    vm.vfdUnitId := controller^.getVfdUnitId();
     vm.vfdFrequency := drives.getVfdFrequency();
     vm.vfdStatus := drives.getVfdStatus();
 
-    for i := 1 to 4 do
-        vm.pumps[i].id := i;
-        vm.pumps[i].role := units.getUnitRole(i);
-        vm.pumps[i].available := units.getUnitAvailable(i);
-        vm.pumps[i].faulted := units.getUnitFaulted(i);
-        vm.pumps[i].active := units.getUnitActive(i);
-    end_for
-
-    buildView := vm;
+    buildControllerView := vm;
 end_method
+
+
+method public buildPumpView : PumpUnitView
+var_input 
+	id : udint; 
+end_var
+var 
+	vm : PumpUnitView;
+	unit : unitHandle;
+end_var
+
+	if units = NULL or drives = NULL then return; end_if
+	
+	unit := units.findUnit(id);
+	if unit <> NULL then
+    vm.id := id;
+    
+    vm.role := unit^.role;
+    vm.available := unit^.available;
+    vm.faulted := unit^.faulted;
+    vm.active := unit^.isActive();
+    vm.power := unit^.getPerformance(drives.getVfdFrequency());
+	end_if
+	
+    buildPumpView := vm;
+end_method
+
+
 
 end_class

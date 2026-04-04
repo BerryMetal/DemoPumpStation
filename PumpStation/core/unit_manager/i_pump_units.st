@@ -3,7 +3,7 @@
 end_type
 
 
-interface IUnitManager
+interface IPumpUnits
 	method init
 		var_input 
 			collection : ref_to array[*] of PumpUnit;
@@ -21,6 +21,10 @@ interface IUnitManager
 	method findBypassUnit : unitHandle
 	end_method
 
+	method findUnit : unitHandle
+	var_input id : udint; end_var
+	end_method
+	
 	method getSize : udint
 	end_method  
 	     
@@ -47,5 +51,6 @@ interface IUnitManager
 	method getCurrentPower : real
 	var_input freq : real; end_var
 	end_method
+	
 	
 end_interface

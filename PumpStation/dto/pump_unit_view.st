@@ -6,5 +6,6 @@ type PumpUnitView :
 	    available : bool;
 	    faulted : bool;
 	    active : bool;
+	    power : real;
 	end_struct;
 end_type

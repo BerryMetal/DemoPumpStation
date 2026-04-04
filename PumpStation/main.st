@@ -1,22 +1,36 @@
-﻿program pump
-	var 
-		init : bool := false;
-	end_var
+﻿
+type PumpsDef: udint (
+					total := 5
+);
+end_type
 
-VAR
-	pump_units : array[1..5] of PumpUnit;
+
+program pump
+
+var 
+	init : bool := false;
 	
-    vfd_drv : DriveAdapter;
-    logger : TerminalLogger;
-    units : UnitManager;
-    pump_controller : PumpStationController;
-    presenter : BasicPumpStationPresenter;
+	pump_units : array[1..PumpsDef#total] of PumpUnit;
+	
+	scada_settings_segment : array [1..10] of word;
+    scada_feedback_segment : array [1..50] of word;
+    
+    io_scada    : PumpModbus;
+    vfd_drv 	: DriveAdapter;
+    logger 	 : TerminalLogger;
+    units 	  : UnitManager;
+    pump_controller   : PumpStationController;
+    presenter 		: BasicPumpStationPresenter;
 
     scada_pdi : PumpStationControl;
-    scada_pdo : PumpStationViewModel;
+    
+    scada_pdo_ctrl : PumpControllerViewModel;
+    scada_pdo_pump : array [1..PumpsDef#total] of PumpUnitView;
     
     pump_power : real := 100.0;
-END_VAR
+    id : udint;
+
+end_var
 
 	if not init then 
 		init := true;
@@ -24,17 +38,27 @@ END_VAR
 
 		units.init(ref(pump_units), pump_power);
 		pump_controller.init(vfd_drv, logger, units);
-		presenter.init(vfd_drv, units);
+		presenter.init(vfd_drv, units, pump_controller);
+		
+		io_scada.init(ref(scada_settings_segment), ref(scada_feedback_segment));
 		
 		scada_pdi.startCmd := true;
 		scada_pdi.stopCmd := false;
-		scada_pdi.setpointPower := 234;		
+		scada_pdi.setpointPower := 234;	
+		
 	end_if
 	
 	pump_controller.applyControl(scada_pdi);
 	pump_controller.update();
 	pump_controller.update();
 	
-	scada_pdo := presenter.buildView(ref(pump_controller));
+	scada_pdo_ctrl := presenter.buildControllerView();
+	for id:=1 to PumpsDef#total do
+		scada_pdo_pump[id] := presenter.buildPumpView(id);
+	end_for;
+	
+	io_scada.process_pdi(scada_pdi);
+	io_scada.process_pdo(scada_pdo_ctrl, ref(scada_pdo_pump));
+	io_scada.iterate();
 		
 end_program

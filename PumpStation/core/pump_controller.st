@@ -1,9 +1,9 @@
-﻿class PumpStationController
+﻿class PumpStationController implements IControllerState
 
 var private
     drives : IPumpVfdDriveAdapter;
     logger : ILogger;
-    units :  IUnitManager;
+    units :  IPumpUnits;
     
     requested : real;
     started : bool;
@@ -12,7 +12,7 @@ end_var
 
 
 method public init
-var_input d : IPumpVfdDriveAdapter; l : ILogger; m : IUnitManager; end_var
+var_input d : IPumpVfdDriveAdapter; l : ILogger; m : IPumpUnits; end_var
     drives := d;
     logger := l;
 	units  := m;
