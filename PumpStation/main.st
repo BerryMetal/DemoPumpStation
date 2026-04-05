@@ -29,7 +29,7 @@ var
     
     pump_power : real := 100.0;
     id : udint;
-
+	
 end_var
 
 	if not init then 
@@ -49,7 +49,6 @@ end_var
 	end_if
 	
 	pump_controller.applyControl(scada_pdi);
-	pump_controller.update();
 	pump_controller.update();
 	
 	scada_pdo_ctrl := presenter.buildControllerView();

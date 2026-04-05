@@ -5,7 +5,7 @@
 	    activePower : real;
 	
 	    vfdUnitId : udint;
-	    vfdFrequency : lreal;
+	    vfdFrequency : real;
 	    vfdStatus : VfdState;
 	end_struct;
 

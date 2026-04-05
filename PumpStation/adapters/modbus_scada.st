@@ -3,8 +3,7 @@
 var private
     modbus : Modbus.ModbusService;	    
     holdings, inputs : Modbus.ModbusSegment;
-    mbTrace : Modbus.TraceNotifier;
-    dummy : word;
+    notifier : Modbus.EmptyNotifier;
 end_var
 
 method public init 
@@ -23,21 +22,18 @@ method public init
 	modbus.register(holdings);
 	modbus.register(inputs);
 	
-	holdings.setNotifier(mbTrace);
-	inputs.setNotifier(mbTrace);
-	
+	holdings.setNotifier(notifier);
+	inputs.setNotifier(notifier);
 	
 end_method
 
 method public process_pdi 
 var_in_out pdi : PumpStationControl; end_var
-
-	pdi.startCmd := true;
-	pdi.stopCmd := false;
-	pdi.setpointPower := 123.0;
-	
-	holdings.requestRefresh();
-	
+var 
+	codec : PdiCodec;
+end_var
+	codec.init(0, holdings);
+	codec.decode(pdi);
 end_method
 
 method public process_pdo 
@@ -45,9 +41,17 @@ var_input
 	ctrl_state : PumpControllerViewModel; 
 	pumps_state : ref_to array[*] of PumpUnitView; 
 end_var
-
-	inputs.writeRawWord(1, dummy);
-	dummy := dummy + 1;
+var 
+	codec : PdoCodec;
+	i : udint;
+end_var
+	codec.init(0, inputs);
+	
+	codec.encode(ref(ctrl_state));
+	for i := lower_bound(pumps_state, 1) 
+				to upper_bound(pumps_state, 1) do codec.encode(ref(pumps_state^[i]));
+	end_for
+	
 	inputs.publish();
 end_method
 
