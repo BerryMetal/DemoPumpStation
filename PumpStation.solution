@@ -5,5 +5,9 @@
       <id value="eaaf5c0c-14e8-4ae5-abb7-bc194f591a2a" />
       <path>PumpStation\PumpStation.proj</path>
     </project>
+    <project>
+      <id value="84b6ef60-3730-4f04-b0cb-98cab5ae824d" />
+      <path>Testing\Testing.proj</path>
+    </project>
   </items>
 </solution>

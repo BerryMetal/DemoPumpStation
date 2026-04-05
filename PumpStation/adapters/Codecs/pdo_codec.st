@@ -30,7 +30,7 @@ end_method
 
 method public encode
 var_input
-    entry : ref_to PumpControllerViewModel;
+    entry : PumpControllerViewModel;
 end_var
 var
     cur : Modbus.ModbusCursor;
@@ -42,13 +42,13 @@ end_var
     cur.attach(segment);
 	cur.seek(offset);
 
-	states.0 := entry^.isStarted;
-	states.%b1 := entry^.vfdStatus;
+	states.0 := entry.isStarted;
+	states.%b1 := entry.vfdStatus;
 	cur.writeWord(states);
-	cur.writeWord(udint_to_word(entry^.vfdUnitId));
-	cur.writeWord(this.realToModbusRounded(entry^.requestedPower));
-	cur.writeWord(this.realToModbusRounded(entry^.vfdFrequency));
-	cur.writeWord(this.realToModbusRounded(entry^.activePower));
+	cur.writeWord(udint_to_word(entry.vfdUnitId));
+	cur.writeWord(this.realToModbusRounded(entry.requestedPower));
+	cur.writeWord(this.realToModbusRounded(entry.vfdFrequency));
+	cur.writeWord(this.realToModbusRounded(entry.activePower));
     
     offset := cur.position();
 end_method

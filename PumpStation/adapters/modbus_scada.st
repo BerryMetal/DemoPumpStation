@@ -47,7 +47,7 @@ var
 end_var
 	codec.init(0, inputs);
 	
-	codec.encode(ref(ctrl_state));
+	codec.encode(ctrl_state);
 	for i := lower_bound(pumps_state, 1) 
 				to upper_bound(pumps_state, 1) do codec.encode(ref(pumps_state^[i]));
 	end_for

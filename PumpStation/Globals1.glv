@@ -1,2 +1,4 @@
 ﻿var_global
+	scada_settings_segment : array [1..10] of word;
+    scada_feedback_segment : array [1..50] of word;
 end_var

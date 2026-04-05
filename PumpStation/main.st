@@ -1,35 +1,27 @@
 ﻿
 type PumpsDef: udint (
-					total := 5
+		total := 5
 );
 end_type
 
 
 program pump
-
 var 
-	init : bool := false;
+	init 		  : bool := false;
+	pump_power 	: real := 100.0;
+	id 			: udint;
 	
-	pump_units : array[1..PumpsDef#total] of PumpUnit;
-	
-	scada_settings_segment : array [1..10] of word;
-    scada_feedback_segment : array [1..50] of word;
+    scada_pdo_ctrl      : PumpControllerViewModel;
+    scada_pdi 		  : PumpStationControl;
+    scada_pdo_pump 	 : array [1..PumpsDef#total] of PumpUnitView;	
+	pump_units 		 : array[1..PumpsDef#total] of PumpUnit;
     
-    io_scada    : PumpModbus;
-    vfd_drv 	: DriveAdapter;
-    logger 	 : TerminalLogger;
-    units 	  : UnitManager;
-    pump_controller   : PumpStationController;
-    presenter 		: BasicPumpStationPresenter;
-
-    scada_pdi : PumpStationControl;
-    
-    scada_pdo_ctrl : PumpControllerViewModel;
-    scada_pdo_pump : array [1..PumpsDef#total] of PumpUnitView;
-    
-    pump_power : real := 100.0;
-    id : udint;
-	
+    io_scada    		: PumpModbus;
+    vfd_drv 			: DriveAdapter;
+    logger 	 		: TerminalLogger;
+    units 	  		: UnitManager;
+    pump_controller     : PumpStationController;
+    presenter 		  : BasicPumpStationPresenter;
 end_var
 
 	if not init then 
@@ -61,3 +53,4 @@ end_var
 	io_scada.iterate();
 		
 end_program
+
