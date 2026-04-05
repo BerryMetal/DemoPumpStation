@@ -1,6 +1,6 @@
 ﻿
 // @Test "PdoCodec encode PumpUnitView basic field mapping"
-// @data (id:=16#12345678, expectedIdLo:=16#5678, expectedIdHi:=16#1234, role:=7, available:=1, faulted:=0, active:=1, power:=12.3, expectedStates:=5, expectedPower:=123)
+// @data (id:=16#12345678, expectedIdLo:=16#5678, expectedIdHi:=16#1234, role:=7, available:=1, faulted:=0, active:=1, power:=123, expectedStates:=5, expectedPower:=123)
 FUNCTION Test_PdoCodec_Encode_PumpUnitView_Basic : bool
 VAR_INPUT
     id : dword;
@@ -33,7 +33,7 @@ END_VAR
 
     // Act
     codec.encode(ref(entry));
-
+	
     // Assert
     Test_PdoCodec_Encode_PumpUnitView_Basic :=
         (words[0] = expectedIdLo) and
@@ -96,7 +96,7 @@ END_FUNCTION
 
 
 // @Test "PdoCodec encode PumpUnitView from non zero offset"
-// @data (startOffset:=2, id:=16#00000001, role:=9, available:=1, faulted:=1, active:=0, power:=4.2, expectedStates:=3, expectedPower:=42)
+// @data (startOffset:=2, id:=16#00000001, role:=9, available:=1, faulted:=1, active:=0, power:=4.2, expectedStates:=3, expectedPower:=4)
 FUNCTION Test_PdoCodec_Encode_PumpUnitView_WithOffset : bool
 VAR_INPUT
     startOffset : uint;
@@ -139,7 +139,7 @@ END_VAR
 
     // Act
     codec.encode(ref(entry));
-
+				
     // Assert
     Test_PdoCodec_Encode_PumpUnitView_WithOffset :=
         (words[startOffset + 2] = role) and

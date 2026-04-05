@@ -44,7 +44,7 @@ class UnitManager implements IPumpUnits
 	end_method
 
 
-	method findUnit : unitHandle
+	method public findUnit : unitHandle
 	var_input id : udint; end_var
 	var i : udint; end_var
 	    for i := start to end do
@@ -86,12 +86,14 @@ class UnitManager implements IPumpUnits
 	     
 	
 	method public getUnitRole : PumpRole
-	var_input i : udint; end_var
+	var_input id : udint; end_var
+	var i : udint; end_var
+	
 		getUnitRole := PumpRole#error;
 		if not this.isValid() then return; end_if
 	
 	    for i := start to end do
-	        if units^[i].id = i then
+	        if units^[i].id = id then
 	        	getUnitRole := units^[i].role;
 	            return;
 	        end_if
@@ -100,12 +102,13 @@ class UnitManager implements IPumpUnits
 	
 	
 	method public getUnitAvailable : bool
-	var_input i : udint; end_var
+	var_input id : udint; end_var
+	var i : udint; end_var;
 	        
 		if not this.isValid() then return; end_if
 	
-	    for i := start to end do
-	        if units^[i].id = i then
+	    for i := start to end do	    
+	        if units^[i].id = id then
 	        	getUnitAvailable := units^[i].available;
 	            return;
 	        end_if
@@ -115,13 +118,14 @@ class UnitManager implements IPumpUnits
 	
 	
 	method public getUnitFaulted : bool
-	var_input i : udint; end_var
-	       
+	var_input id : udint; end_var
+	var i : udint; end_var
+	
 	    getUnitFaulted := true;
 		if not this.isValid() then return; end_if
 	
 	    for i := start to end do
-	        if units^[i].id = i then
+	        if units^[i].id = id then
 	        	getUnitFaulted := units^[i].faulted;
 	            return;
 	        end_if
@@ -131,12 +135,13 @@ class UnitManager implements IPumpUnits
 	
 	
 	method public getUnitActive : bool
-	var_input i : udint; end_var
-	    
+	var_input id : udint; end_var
+	var i : udint; end_var
+	
 		if not this.isValid() then return; end_if
 	
 	    for i := start to end do
-	        if units^[i].id = i then
+	        if units^[i].id = id then
 	        	getUnitActive := units^[i].isActive();
 	            return;
 	        end_if
@@ -144,7 +149,7 @@ class UnitManager implements IPumpUnits
 	end_method
 
 	        
-	method getCurrentPower : real
+	method public getCurrentPower : real
 	var_input freq : real; end_var
 	var i : udint; end_var
 		if not this.isValid() then return; end_if

@@ -1,7 +1,7 @@
 ﻿type 
 
 	PumpRole : usint (
-		error,
+		error := 0,
 	    stopped,
 	    onVfd,
 	    onBypass
