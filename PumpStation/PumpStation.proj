@@ -2,13 +2,13 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <version>1.0.0</version>
   <target-type>plc-application</target-type>
-  <target-platform>win64</target-platform>
+  <target-platform>arm64</target-platform>
   <configurations>
     <configuration>
       <resources>
         <resource name="PLC_1" core-id="CORE">
           <tasks>
-            <task name="Pump" priority="0" interval="t#100ms" single="" />
+            <task name="Pump" priority="0" interval="t#1ms" single="" />
           </tasks>
           <programs>
             <program name="p1" task-name="pump" program-instance="pump()" />

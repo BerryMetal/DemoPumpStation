@@ -1,0 +1,119 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+title Pump Station - Top View UML
+
+' Interfaces
+interface ILogger
+interface IPumpVfdDriveAdapter
+interface IPumpUnits
+interface IControllerState
+interface IPumpStationPresenter
+interface IScadaModbus
+
+' Core classes
+class PumpUnit
+class UnitManager
+class PumpStationController
+class BasicPumpStationPresenter
+class DriveAdapter
+class TerminalLogger
+class PumpModbus
+class LoopControl
+
+' Modbus codecs
+class ModbusBaseCodec
+class PdiCodec
+class PdoCodec
+
+' DTO / value types
+class PumpStationControl <<struct>>
+class PumpControllerViewModel <<struct>>
+class PumpUnitView <<struct>>
+
+enum PumpRole
+enum VfdState
+
+class unitHandle <<type>>
+
+' External / library types
+interface IModbusSegmentAccess <<Modbus>>
+class ModbusCursor <<Modbus>>
+class ModbusService <<Modbus>>
+class ModbusSegment <<Modbus>>
+class EmptyNotifier <<Modbus>>
+
+class MainProgram <<program>>
+class PumpUnitArray <<array>>
+class PumpUnitViewArray <<array>>
+
+' Implementations
+DriveAdapter ..|> IPumpVfdDriveAdapter
+TerminalLogger ..|> ILogger
+UnitManager ..|> IPumpUnits
+PumpStationController ..|> IControllerState
+BasicPumpStationPresenter ..|> IPumpStationPresenter
+PumpModbus ..|> IScadaModbus
+
+PdiCodec --|> ModbusBaseCodec
+PdoCodec --|> ModbusBaseCodec
+
+' Main relationships
+UnitManager --> PumpUnit : manages
+unitHandle ..> PumpUnit : ref_to
+
+PumpStationController --> IPumpVfdDriveAdapter : drives
+PumpStationController --> ILogger : logger
+PumpStationController --> IPumpUnits : units
+PumpStationController ..> PumpStationControl : applyControl
+PumpStationController ..> unitHandle : vfdUnit
+
+BasicPumpStationPresenter --> IPumpVfdDriveAdapter : drives
+BasicPumpStationPresenter --> IPumpUnits : units
+BasicPumpStationPresenter --> IControllerState : controller
+BasicPumpStationPresenter ..> PumpControllerViewModel : builds
+BasicPumpStationPresenter ..> PumpUnitView : builds
+BasicPumpStationPresenter ..> unitHandle
+
+PumpModbus --> ModbusService : modbus
+PumpModbus --> ModbusSegment : holdings
+PumpModbus --> ModbusSegment : inputs
+PumpModbus --> EmptyNotifier : notifier
+PumpModbus ..> PdiCodec : uses
+PumpModbus ..> PdoCodec : uses
+PumpModbus ..> PumpStationControl : process_pdi
+PumpModbus ..> PumpControllerViewModel : process_pdo
+PumpModbus ..> PumpUnitView : process_pdo
+
+ModbusBaseCodec --> IModbusSegmentAccess : segment
+PdiCodec ..> ModbusCursor : decode
+PdiCodec ..> PumpStationControl : decodes into
+
+PdoCodec ..> ModbusCursor : encode
+PdoCodec ..> PumpUnitView : encodes
+PdoCodec ..> PumpControllerViewModel : encodes
+
+DriveAdapter ..> VfdState
+PumpUnit ..> PumpRole
+PumpControllerViewModel ..> VfdState
+PumpUnitView ..> PumpRole
+
+' Main program composition
+MainProgram *-- LoopControl : time_check
+MainProgram *-- PumpModbus : io_scada
+MainProgram *-- DriveAdapter : vfd_drv
+MainProgram *-- TerminalLogger : logger
+MainProgram *-- UnitManager : units
+MainProgram *-- PumpStationController : pump_controller
+MainProgram *-- BasicPumpStationPresenter : presenter
+
+MainProgram *-- PumpStationControl : scada_pdi
+MainProgram *-- PumpControllerViewModel : scada_pdo_ctrl
+MainProgram *-- PumpUnitViewArray : scada_pdo_pump
+MainProgram *-- PumpUnitArray : pump_units
+
+PumpUnitViewArray ..> PumpUnitView : contains
+PumpUnitArray ..> PumpUnit : contains
+
+@enduml

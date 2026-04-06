@@ -5,11 +5,14 @@ type PumpsDef: udint (
 end_type
 
 
+
 program pump
 var 
 	init 		  : bool := false;
 	pump_power 	: real := 100.0;
 	id 			: udint;
+	
+	time_check     	 : LoopControl := (task_id := 'Pump');
 	
     scada_pdo_ctrl      : PumpControllerViewModel;
     scada_pdi 		  : PumpStationControl;
@@ -51,6 +54,7 @@ end_var
 	io_scada.process_pdi(scada_pdi);
 	io_scada.process_pdo(scada_pdo_ctrl, ref(scada_pdo_pump));
 	io_scada.iterate();
-		
+	
+	time_check.get_period();		
 end_program
 

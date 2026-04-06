@@ -23,9 +23,11 @@ method public applyControl
 var_input ctrl : PumpStationControl; end_var
 
     if ctrl.stopCmd then
+    	if started then logger.info('Station stopped from SCADA');
+    	end_if
+    	
         started := false;
         requested := 0;
-        logger.info('Station stopped from SCADA');
         return;
     end_if
 
@@ -47,7 +49,7 @@ var
     activePower : real;
     unit : unitHandle;
     frequency : real;
-    frequency_step : real := 1.0;
+    frequency_step : real := 0.01;
 end_var
 	
 	if drives = NULL or units = NULL then return; end_if
